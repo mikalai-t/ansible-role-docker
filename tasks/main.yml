@@ -1,0 +1,15 @@
+---
+# file: tasks/main.yml
+
+- include_tasks: 01-prepare-env.yml
+
+- include_tasks: 02-setup-packages.yml
+
+- include_tasks: 03-configure-docker-daemon.yml
+
+- name: "0.4.(service) - ensure docker daemon is started"
+  service:
+    name: "{{ __docker_service_name }}"
+    state: started
+    enabled: yes
+  become: yes

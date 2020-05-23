@@ -1,0 +1,25 @@
+---
+
+__docker_prerequisite_packages:
+  - apt-transport-https
+  - ca-certificates
+  - gnupg2
+  - kmod
+  - dirmngr
+
+__docker_apt_key_id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+__docker_apt_repository: "deb [arch=amd64] https://download.docker.com/linux/{{ 'debian' if ansible_distribution|lower == 'debian' else 'ubuntu' }} {{ ansible_distribution_release|lower) }} stable"
+
+__docker_service_name: docker
+__docker_binary_file: /usr/bin/docker
+__docker_service_systemd_d_dir: /lib/systemd/system/docker.service.d
+__docker_socket_systemd_d_dir: /lib/systemd/system/docker.socket.d
+__docker_socket_file: "/var/run/{{ __docker_service_name }}.sock"
+
+__docker_daemon_config:
+  storage-driver: overlay2
+  ipv6: false
+  log-driver: "json-file"
+  log-opts:
+    max-size: "10m"
+    max-file: "5"

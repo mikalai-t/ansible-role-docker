@@ -1,0 +1,70 @@
+---
+
+- name: "03.1.1 - make sure docker systemd .d directories is created"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "0"
+    group: "0"
+    mode: "u=rwX,go=rX"
+    recurse: no
+  become: yes
+  with_items:
+    - "{{ __docker_socket_systemd_d_dir }}"
+    - "{{ __docker_service_systemd_d_dir }}"
+
+- name: "03.1.2 - override docker socket systemd config"
+  copy:
+    content: |
+      [Socket]
+      ExecStartPre=
+      ExecStartPre=-/usr/bin/find /var/run/ -maxdepth 1 -name 'docker.sock' -type d -exec rm -rf {} \;
+    dest: "{{ __docker_socket_systemd_d_dir }}/socket-start.conf"
+  become: yes
+  notify:
+    - docker-reload-systemd
+    - docker-restart-service
+
+- name: "03.2.1 - make sure docker daemon config directory exists"
+  file:
+    path: /etc/docker
+    state: directory
+  become: yes
+
+- name: "03.2.2 - create docker daemon.json config"
+  copy:
+    content: "{{ __docker_daemon_config | to_nice_json }}"
+    dest: /etc/docker/daemon.json
+  become: eys
+  notify:
+    - docker-restart-service
+
+- meta: flush_handlers
+
+- name: "03.3.1 - check if '/etc/updatedb.conf' exists"
+  stat:
+    path: /etc/updatedb.conf
+  register: _etc_updatedb
+  check_mode: no
+
+- name: "03.3.2 - ensure updatedb does not index /var/lib/docker"
+  lineinfile:
+    dest: /etc/updatedb.conf
+    state: present
+    backrefs: yes
+    regexp: '^PRUNEPATHS="(/var/lib/docker )?(.*)"$'
+    line: 'PRUNEPATHS="/var/lib/docker \2"'
+  become: yes
+  when:
+    - _etc_updatedb is defined and _etc_updatedb.stat is defined
+    - _etc_updatedb.stat.exists
+
+- name: "03.4 - make sure 'overlay' kernel module is loaded"
+  modprobe:
+    name: overlay
+    state: present
+  notify:
+    - docker-stop-service
+    - docker-clear-data-dir
+
+- meta: flush_handlers
