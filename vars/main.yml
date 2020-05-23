@@ -8,7 +8,7 @@ __docker_prerequisite_packages:
   - dirmngr
 
 __docker_apt_key_id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-__docker_apt_repository: "deb [arch=amd64] https://download.docker.com/linux/{{ 'debian' if ansible_distribution|lower == 'debian' else 'ubuntu' }} {{ ansible_distribution_release|lower) }} stable"
+__docker_apt_repository: "deb [arch=amd64] https://download.docker.com/linux/{{ 'debian' if ansible_distribution|lower == 'debian' else 'ubuntu' }} {{ ansible_distribution_release|lower }} stable"
 
 __docker_service_name: docker
 __docker_binary_file: /usr/bin/docker
