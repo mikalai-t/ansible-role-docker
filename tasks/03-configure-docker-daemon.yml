@@ -35,7 +35,7 @@
   copy:
     content: "{{ __docker_daemon_config | to_nice_json }}"
     dest: /etc/docker/daemon.json
-  become: eys
+  become: yes
   notify:
     - docker-restart-service
 
