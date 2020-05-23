@@ -9,7 +9,7 @@
 - name: "02.2.1 - setup docker apt repository key"
   apt_key:
     id: "{{ __docker_apt_key_id }}"
-    url: https://download.docker.com/linux/{{ ansible_distribution_release|lower) }}/gpg
+    url: https://download.docker.com/linux/{{ ansible_distribution_release|lower }}/gpg
     state: present
   become: yes
 
