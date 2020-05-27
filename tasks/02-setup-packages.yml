@@ -6,14 +6,25 @@
     state: present
   become: yes
 
-- name: "02.2 - install docker packages"
+- name: "02.2.1 - install some of docker packages"
   apt:
     deb: "{{ item }}"
     state: present
   become: yes
   loop:
-    # the order is important to resolve dependencies
     - "{{ __docker_containerd_download_url }}"
     - "{{ __docker_cli_download_url }}"
+
+- name: "02.2.2 - install docker package"
+  apt:
+    deb: "{{ item }}"
+    state: present
+  become: yes
+  ignore_errors: yes
+  loop:
     - "{{ __docker_download_url }}"
 
+- name: "02.2.3 - fix broken installation"
+  apt:
+    state: fixed
+  become: yes

@@ -15,8 +15,8 @@ __docker_download_url: "https://download.docker.com/linux/{{ ansible_distributio
 
 __docker_service_name: docker
 __docker_binary_file: /usr/bin/docker
-__docker_service_systemd_d_dir: /lib/systemd/system/docker.service.d
-__docker_socket_systemd_d_dir: /lib/systemd/system/docker.socket.d
+__docker_service_systemd_d_dir: /etc/systemd/system/docker.service.d
+__docker_socket_systemd_d_dir: /etc/systemd/system/docker.socket.d
 __docker_socket_file: "/var/run/{{ __docker_service_name }}.sock"
 
 __docker_data_dir: /var/lib/docker
