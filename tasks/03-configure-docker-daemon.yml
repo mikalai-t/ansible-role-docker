@@ -25,15 +25,23 @@
     - docker-reload-systemd
     - docker-restart-service
 
+- name: "03.2 - set docker daemon.json config"
+  copy:
+    content: "{{ __docker_daemon_config | to_nice_json }}"
+    dest: "{{ __docker_daemon_config_file }}"
+  become: yes
+  notify:
+    - docker-restart-service
+
 - meta: flush_handlers
 
-- name: "03.2.1 - check if '/etc/updatedb.conf' exists"
+- name: "03.3.1 - check if '/etc/updatedb.conf' exists"
   stat:
     path: /etc/updatedb.conf
   register: _etc_updatedb
   check_mode: no
 
-- name: "03.2.2 - ensure updatedb does not index /var/lib/docker"
+- name: "03.3.2 - ensure updatedb does not index /var/lib/docker"
   lineinfile:
     dest: /etc/updatedb.conf
     state: present

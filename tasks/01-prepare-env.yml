@@ -10,16 +10,8 @@
 
 - meta: flush_handlers
 
-- name: "01.2.1 - make sure docker daemon config directory exists"
+- name: "01.2 - make sure docker daemon config directory exists"
   file:
     path: "{{ __docker_daemon_config_dir }}"
     state: directory
   become: yes
-
-- name: "01.2.2 - provide docker daemon.json config"
-  copy:
-    content: "{{ __docker_daemon_config | to_nice_json }}"
-    dest: "{{ __docker_daemon_config_file }}"
-  become: yes
-  notify:
-    - docker-restart-service
