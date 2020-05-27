@@ -12,6 +12,8 @@
     state: present
   become: yes
   loop:
+    # the order is important to resolve dependencies
     - "{{ __docker_containerd_download_url }}"
-    - "{{ __docker_download_url }}"
     - "{{ __docker_cli_download_url }}"
+    - "{{ __docker_download_url }}"
+

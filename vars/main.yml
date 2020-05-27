@@ -10,8 +10,8 @@ __docker_prerequisite_packages:
   - software-properties-common
 
 __docker_containerd_download_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/dists/{{ ansible_distribution_release|lower }}/pool/stable/amd64/containerd.io_{{ docker_containerd_version }}-3_amd64.deb"
-__docker_download_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/dists/{{ ansible_distribution_release|lower }}/pool/stable/amd64/docker-ce_{{ docker_version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}_amd64.deb"
 __docker_cli_download_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/dists/{{ ansible_distribution_release|lower }}/pool/stable/amd64/docker-ce-cli_{{ docker_version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}_amd64.deb"
+__docker_download_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/dists/{{ ansible_distribution_release|lower }}/pool/stable/amd64/docker-ce_{{ docker_version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}_amd64.deb"
 
 __docker_service_name: docker
 __docker_binary_file: /usr/bin/docker
