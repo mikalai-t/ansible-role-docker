@@ -1,34 +1,17 @@
 ---
 
-- name: "02.1 - install necessary packages"
+- name: "02.1 - install prerequisite packages"
   apt:
     name: "{{ __docker_prerequisite_packages|select()|list }}"
     state: present
   become: yes
 
-- name: "02.2.1 - setup docker apt repository key"
-  apt_key:
-    id: "{{ __docker_apt_key_id }}"
-    url: https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg
-    state: present
-  become: yes
-
-- name: "02.2.2 - setup docker apt repository"
-  apt_repository:
-    repo: "{{ __docker_apt_repository }}"
-    state: present
-    update_cache: no
-  become: yes
-  notify:
-    - docker-update-apt-cache
-
-- meta: flush_handlers
-
-- name: "02.3 - install docker packages"
+- name: "02.2 - install docker packages"
   apt:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
+    deb: "{{ item }}"
     state: present
   become: yes
+  loop:
+    - "{{ __docker_containerd_download_url }}"
+    - "{{ __docker_download_url }}"
+    - "{{ __docker_cli_download_url }}"

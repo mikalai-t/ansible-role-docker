@@ -25,29 +25,15 @@
     - docker-reload-systemd
     - docker-restart-service
 
-- name: "03.2.1 - make sure docker daemon config directory exists"
-  file:
-    path: /etc/docker
-    state: directory
-  become: yes
-
-- name: "03.2.2 - create docker daemon.json config"
-  copy:
-    content: "{{ __docker_daemon_config | to_nice_json }}"
-    dest: /etc/docker/daemon.json
-  become: yes
-  notify:
-    - docker-restart-service
-
 - meta: flush_handlers
 
-- name: "03.3.1 - check if '/etc/updatedb.conf' exists"
+- name: "03.2.1 - check if '/etc/updatedb.conf' exists"
   stat:
     path: /etc/updatedb.conf
   register: _etc_updatedb
   check_mode: no
 
-- name: "03.3.2 - ensure updatedb does not index /var/lib/docker"
+- name: "03.2.2 - ensure updatedb does not index /var/lib/docker"
   lineinfile:
     dest: /etc/updatedb.conf
     state: present
@@ -58,13 +44,3 @@
   when:
     - _etc_updatedb is defined and _etc_updatedb.stat is defined
     - _etc_updatedb.stat.exists
-
-- name: "03.4 - make sure 'overlay' kernel module is loaded"
-  modprobe:
-    name: overlay
-    state: present
-  notify:
-    - docker-stop-service
-    - docker-clear-data-dir
-
-- meta: flush_handlers

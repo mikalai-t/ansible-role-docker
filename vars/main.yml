@@ -7,9 +7,11 @@ __docker_prerequisite_packages:
   - kmod
   - dirmngr
   - bridge-utils
+  - software-properties-common
 
-__docker_apt_key_id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-__docker_apt_repository: "deb [arch=amd64] https://download.docker.com/linux/{{ 'debian' if ansible_distribution|lower == 'debian' else 'ubuntu' }} {{ ansible_distribution_release|lower }} stable"
+__docker_containerd_download_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/dists/{{ ansible_distribution_release|lower }}/pool/stable/amd64/containerd.io_{{ docker_containerd_version }}-3_amd64.deb"
+__docker_download_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/dists/{{ ansible_distribution_release|lower }}/pool/stable/amd64/docker-ce_{{ docker_version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}_amd64.deb"
+__docker_cli_download_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/dists/{{ ansible_distribution_release|lower }}/pool/stable/amd64/docker-ce-cli_{{ docker_version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release|lower }}_amd64.deb"
 
 __docker_service_name: docker
 __docker_binary_file: /usr/bin/docker
@@ -17,6 +19,10 @@ __docker_service_systemd_d_dir: /lib/systemd/system/docker.service.d
 __docker_socket_systemd_d_dir: /lib/systemd/system/docker.socket.d
 __docker_socket_file: "/var/run/{{ __docker_service_name }}.sock"
 
+__docker_data_dir: /var/lib/docker
+
+__docker_daemon_config_dir: /etc/docker
+__docker_daemon_config_file: "{{ __docker_daemon_config_dir }}/daemon.json"
 __docker_daemon_config:
   storage-driver: overlay2
   ipv6: false
