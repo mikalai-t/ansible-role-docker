@@ -1,11 +1,5 @@
 ---
 
-- name: "docker-clear-data-dir"
-  file:
-    path: "{{ __docker_data_dir }}"
-    state: absent
-  become: yes
-
 - name: "docker-reload-systemd"
   shell:
     cmd: "systemctl daemon-reload"
@@ -20,6 +14,12 @@
   become: yes
   # might be not installed yet
   ignore_errors: yes
+
+- name: "docker-clear-data-dir"
+  file:
+    path: "{{ __docker_data_dir }}"
+    state: absent
+  become: yes
 
 - name: "docker-restart-service"
   service:
