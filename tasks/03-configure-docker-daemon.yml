@@ -19,7 +19,7 @@
       [Socket]
       ExecStartPre=
       ExecStartPre=-/usr/bin/find /var/run/ -maxdepth 1 -name 'docker.sock' -type d -exec rm -rf {} \;
-    dest: "{{ __docker_socket_systemd_d_dir }}/socket-start.conf"
+    dest: "{{ __docker_socket_systemd_d_dir }}/override-socket-execstartpre.conf"
   become: yes
   notify:
     - docker-reload-systemd

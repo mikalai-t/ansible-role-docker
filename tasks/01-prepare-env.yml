@@ -1,6 +1,15 @@
 ---
 
-- name: "01.1 - make sure 'overlay' kernel module is loaded"
+- name: "01.1 - make sure base play directory exists and world writable"
+  file:
+    path: "{{ __docker_play_dir }}"
+    state: directory
+    owner: 0
+    group: 0
+    mode: "a=rwX"
+  become: yes
+
+- name: "01.2 - make sure 'overlay' kernel module is loaded"
   modprobe:
     name: overlay
     state: present
@@ -10,7 +19,7 @@
 
 - meta: flush_handlers
 
-- name: "01.2 - make sure docker daemon config directory exists"
+- name: "01.3 - make sure docker daemon config directory exists"
   file:
     path: "{{ __docker_daemon_config_dir }}"
     state: directory

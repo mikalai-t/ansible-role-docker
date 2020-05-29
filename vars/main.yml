@@ -1,5 +1,7 @@
 ---
 
+__docker_play_dir: /node-init
+
 __docker_prerequisite_packages:
   - apt-transport-https
   - ca-certificates

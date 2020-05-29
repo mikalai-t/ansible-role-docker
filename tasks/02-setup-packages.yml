@@ -9,7 +9,7 @@
 - name: "02.2 - download docker packages"
   get_url:
     url: "{{ item }}"
-    dest: "{{ lookup('env', 'HOME') }}/{{ item | urlsplit('path') | basename }}"
+    dest: "{{ __docker_play_dir }}/{{ item | urlsplit('path') | basename }}"
   loop:
     - "{{ __docker_containerd_download_url }}"
     - "{{ __docker_cli_download_url }}"
@@ -17,7 +17,7 @@
 
 - name: "02.3.1 - install some of docker packages"
   apt:
-    deb: "{{ lookup('env', 'HOME') }}/{{ item | urlsplit('path') | basename }}"
+    deb: "{{ __docker_play_dir }}/{{ item | urlsplit('path') | basename }}"
     state: present
   become: yes
   loop:
@@ -26,7 +26,7 @@
 
 - name: "02.3.2 - install docker daemon package"
   apt:
-    deb: "{{ lookup('env', 'HOME') }}/{{ __docker_download_url | urlsplit('path') | basename }}"
+    deb: "{{ __docker_play_dir }}/{{ __docker_download_url | urlsplit('path') | basename }}"
     state: present
   become: yes
   ignore_errors: yes
