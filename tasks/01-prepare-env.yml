@@ -9,7 +9,19 @@
     mode: "a=rwX"
   become: yes
 
-- name: "01.2 - make sure 'overlay' kernel module is loaded"
+- name: "01.2.1 - create 'overlay' kernel module start-on-boot config"
+  copy:
+    content: |
+      {{ item }}
+    dest: "{{ __docker_modprobe_load_d_dir }}/{{ item }}.conf"
+  become: yes
+  loop:
+    - overlay
+  notify:
+    - docker-stop-service
+    - docker-clear-data-dir
+
+- name: "01.2.2 - make sure 'overlay' kernel module is loaded"
   modprobe:
     name: overlay
     state: present

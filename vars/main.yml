@@ -21,6 +21,8 @@ __docker_service_systemd_d_dir: /etc/systemd/system/docker.service.d
 __docker_socket_systemd_d_dir: /etc/systemd/system/docker.socket.d
 __docker_socket_file: "/var/run/{{ __docker_service_name }}.sock"
 
+__docker_modprobe_load_d_dir: /etc/modules-load.d
+
 __docker_data_dir: /var/lib/docker
 
 __docker_daemon_config_dir: /etc/docker
